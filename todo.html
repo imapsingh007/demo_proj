@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        /* Basic CSS for styling */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #tasks {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task-item {
+            margin-bottom: 10px;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Task Manager</h1>
+    <input type="text" id="taskInput" placeholder="Enter task...">
+    <button onclick="addTask()">Add Task</button>
+    <ul id="tasks"></ul>
+
+    <script>
+        // JavaScript for adding and deleting tasks
+        function addTask() {
+            var taskInput = document.getElementById("taskInput");
+            var taskText = taskInput.value.trim();
+            if (taskText !== "") {
+                var taskList = document.getElementById("tasks");
+                var newTaskItem = document.createElement("li");
+                newTaskItem.className = "task-item";
+                newTaskItem.innerHTML = taskText + ' <button class="delete-btn" onclick="deleteTask(this)">Delete</button>';
+                taskList.appendChild(newTaskItem);
+                taskInput.value = "";
+            }
+        }
+
+        function deleteTask(btn) {
+            var taskItem = btn.parentNode;
+            taskItem.parentNode.removeChild(taskItem);
+        }
+    </script>
+</body>
+</html>
