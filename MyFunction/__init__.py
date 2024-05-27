@@ -1,22 +1,40 @@
-import logging
-import azure.functions as func
+def add(x, y):
+    return x + y
 
-def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
+def subtract(x, y):
+    return x - y
 
-    name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
+def multiply(x, y):
+    return x * y
 
-    if name:
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
+def divide(x, y):
+    if y == 0:
+        return "Error! Division by zero is not allowed."
     else:
-        return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-             status_code=200
-        )
+        return x / y
+
+print("Select operation:")
+print("1. Addition")
+print("2. Subtraction")
+print("3. Multiplication")
+print("4. Division")
+
+while True:
+    choice = input("Enter choice (1/2/3/4): ")
+
+    if choice in ('1', '2', '3', '4'):
+        num1 = float(input("Enter first number: "))
+        num2 = float(input("Enter second number: "))
+
+        if choice == '1':
+            print("Result:", add(num1, num2))
+        elif choice == '2':
+            print("Result:", subtract(num1, num2))
+        elif choice == '3':
+            print("Result:", multiply(num1, num2))
+        elif choice == '4':
+            print("Result:", divide(num1, num2))
+        
+        break
+    else:
+        print("Invalid input")
