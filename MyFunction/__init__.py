@@ -1,3 +1,6 @@
+import logging
+import azure.functions as func
+
 def add(x, y):
     return x + y
 
@@ -13,28 +16,25 @@ def divide(x, y):
     else:
         return x / y
 
-print("Select operation:")
-print("1. Addition")
-print("2. Subtraction")
-print("3. Multiplication")
-print("4. Division")
+def main(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info('Python HTTP trigger function processed a request.')
 
-while True:
-    choice = input("Enter choice (1/2/3/4): ")
+    operation = req.params.get('operation')
+    num1 = float(req.params.get('num1'))
+    num2 = float(req.params.get('num2'))
 
-    if choice in ('1', '2', '3', '4'):
-        num1 = float(input("Enter first number: "))
-        num2 = float(input("Enter second number: "))
-
-        if choice == '1':
-            print("Result:", add(num1, num2))
-        elif choice == '2':
-            print("Result:", subtract(num1, num2))
-        elif choice == '3':
-            print("Result:", multiply(num1, num2))
-        elif choice == '4':
-            print("Result:", divide(num1, num2))
-        
-        break
+    if operation == 'add':
+        result = add(num1, num2)
+    elif operation == 'subtract':
+        result = subtract(num1, num2)
+    elif operation == 'multiply':
+        result = multiply(num1, num2)
+    elif operation == 'divide':
+        result = divide(num1, num2)
     else:
-        print("Invalid input")
+        return func.HttpResponse(
+             "Invalid operation. Please provide a valid operation (add, subtract, multiply, divide).",
+             status_code=400
+        )
+
+    return func.HttpResponse(str(result))
