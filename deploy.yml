@@ -1,39 +1,37 @@
-name: Deploy Static Site
+name: CI for Flask Project
 
+# Trigger workflow on push to the 'main' branch or pull requests targeting 'main'
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  build-and-test: # Name of the job
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
 
     steps:
-      # Check out the repository code
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # Step 1: Check out the code from the repository
+    - name: Checkout Code
+      uses: actions/checkout@v3
 
-      # Set up Python
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
+    # Step 2: Set up Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9 # Specify the version of Python
 
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install Flask-Frozen
+    # Step 3: Install dependencies
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      # Generate static files
-      - name: Freeze Flask app
-        run: python render_static.py
+    # Step 4: Run unit tests
+    - name: Run Tests
+      run: |
+        pytest
 
-      # Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build
