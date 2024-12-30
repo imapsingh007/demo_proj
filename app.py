@@ -1,10 +1,10 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route('/')
 def home():
-    return "<h1>Hello, GitHub Actions!</h1><p>Welcome to the static deployment.</p>"
+    return jsonify(message="Hello, World!")
 
 if __name__ == "__main__":
     app.run(debug=True)
