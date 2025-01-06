@@ -13,9 +13,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository code
+      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
+
+      # Navigate to the correct directory (if the React app is not in the root)
+      - name: Navigate to app directory
+        working-directory: ./frontend  # Change to your app's directory if necessary
+        run: ls
 
       # Set up Node.js
       - name: Set up Node.js
@@ -23,12 +28,17 @@ jobs:
         with:
           node-version: 16
 
-      # Install dependencies and run build
+      # Install dependencies
       - name: Install dependencies
+        working-directory: ./frontend  # Adjust this path as needed
         run: npm install
 
+      # Run tests
       - name: Run tests
+        working-directory: ./frontend  # Adjust this path as needed
         run: npm test -- --watchAll=false
 
+      # Build the app
       - name: Build the app
+        working-directory: ./frontend  # Adjust this path as needed
         run: npm run build
